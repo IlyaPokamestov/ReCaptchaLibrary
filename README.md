@@ -1,6 +1,10 @@
 Google ReCAPTCHA ver.2 backend provider
 ================================================
 
+[![Build Status](https://travis-ci.org/DarioSwain/ReCaptchaLibrary.svg?branch=master)](https://travis-ci.org/DarioSwain/ReCaptchaLibrary)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/DarioSwain/ReCaptchaLibrary/badge.svg)](https://coveralls.io/r/DarioSwain/ReCaptchaLibrary)
+
 You can find full documentation about Google reCAPTCHA API v2 [here](http://developers.google.com/recaptcha/intro).
 
 Installation

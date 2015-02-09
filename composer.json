@@ -1,5 +1,5 @@
 {
-    "name": "dario_swain/ds-recaptcha-library",
+    "name": "dario_swain/re-captcha-library",
     "type": "library",
     "description": "Google ReCAPTCHA (ver. 2) backend provider.",
     "keywords": ["recaptcha", "php", "library", "google api", "validator", "captcha"],
@@ -7,7 +7,9 @@
     "authors": [
         {
             "name": "Ilya Pokamestov",
-            "homepage": "http://github.com/DarioSwain"
+            "email": "dario_swain@yahoo.com",
+            "homepage": "http://github.com/DarioSwain",
+            "role": "Developer"
         }
     ],
     "require": {
