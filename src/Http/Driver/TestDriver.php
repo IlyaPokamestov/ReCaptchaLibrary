@@ -39,17 +39,13 @@ class TestDriver implements DriverInterface
      */
     public function get($url, array $parameters = array())
     {
-        if($this->empty)
-        {
+        if ($this->empty) {
             return false;
         }
 
-        if($this->success)
-        {
+        if ($this->success) {
             return sprintf('{"success": %s}', 'true');
-        }
-        else
-        {
+        } else {
             return sprintf('{"success": %s, "error-codes": ["%s"]}', 'false', 'invalid-input-response');
         }
     }

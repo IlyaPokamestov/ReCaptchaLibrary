@@ -40,11 +40,16 @@ class ReCaptcha
      * @param string $gReCaptchaResponse
      * @throws \Exception
      */
-    function __construct($secret, $clientIp, $gReCaptchaResponse)
+    public function __construct($secret, $clientIp, $gReCaptchaResponse)
     {
-        if (null === $secret)
-        {
-            throw new \Exception(sprintf('To use reCAPTCHA you must get an API key from <a href="%s">%s</a>', self::$signupUrl, self::$signupUrl));
+        if (null === $secret) {
+            throw new \Exception(
+                sprintf(
+                    'To use reCAPTCHA you must get an API key from <a href="%s">%s</a>',
+                    self::$signupUrl,
+                    self::$signupUrl
+                )
+            );
         }
 
         $this->secret = $secret;

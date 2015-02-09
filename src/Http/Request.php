@@ -37,8 +37,7 @@ class Request
         $this->parameters = array();
 
 
-        if(null === $driver)
-        {
+        if (null === $driver) {
             $driver = new SimpleDriver();
         }
 
@@ -109,19 +108,15 @@ class Request
     {
         $response = $this->driver->get($this->getUrl(), $this->getParameters());
 
-        if(false === $response)
-        {
+        if (false === $response) {
             return new Response(false, array('Connection error'));
         }
 
         $response = json_decode($response, true);
 
-        if ($response['success'] === true)
-        {
+        if ($response['success'] === true) {
             return new Response(true);
-        }
-        else
-        {
+        } else {
             return new Response(false, array_key_exists('error-codes', $response) ? $response['error-codes'] : array());
         }
     }
