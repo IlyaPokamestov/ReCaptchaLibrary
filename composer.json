@@ -1,0 +1,22 @@
+{
+    "name": "dario_swain/ds-recaptcha-library",
+    "type": "library",
+    "description": "Google ReCAPTCHA (ver. 2) backend provider.",
+    "keywords": ["recaptcha", "php", "library", "google api", "validator", "captcha"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ilya Pokamestov",
+            "homepage": "http://github.com/DarioSwain"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": { "DS\\Library\\ReCaptcha\\": "src" }
+    }
+}
