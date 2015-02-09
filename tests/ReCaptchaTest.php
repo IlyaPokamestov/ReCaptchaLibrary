@@ -44,7 +44,8 @@ class ReCaptchaTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DS\Library\ReCaptcha\Http\Response', $response);
         $this->assertFalse($response->isSuccess());
         $this->assertNotEmpty($response->getErrors());
-        $this->assertEquals($response->getErrors()[0], 'invalid-input-response');
+        $errors = $response->getErrors();
+        $this->assertEquals($errors[0], 'invalid-input-response');
     }
 
     public function testSimpleDriver()
