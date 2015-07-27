@@ -46,6 +46,31 @@ Use ReCaptcha class for sending request to google API:
 
 ```
 
+Custom Driver
+-------------
+
+For example you use Proxy Server or something else, you can provide your custom driver into ReCaptcha class.
+
+``` php
+<?php
+    class ProxyDriver implements DriverInterface
+    {
+        public function get($url, array $parameters = array())
+        {
+            //Your business logic
+        }
+    }
+    
+    ...
+    
+    $proxyDriver = new ProxyDriver();
+    $reCaptcha = new ReCaptcha($privateKey, $clientIp, $gReCaptchaResponse);
+	$response = $reCaptcha
+	    ->buildRequest($proxyDriver)
+	    ->send();
+
+```
+
 Copyright
 ---------
 
