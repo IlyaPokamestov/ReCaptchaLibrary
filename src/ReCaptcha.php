@@ -40,7 +40,7 @@ class ReCaptcha
      * @param string $gReCaptchaResponse
      * @throws \Exception
      */
-    public function __construct($secret, $clientIp, $gReCaptchaResponse)
+    public function __construct($secret, $clientIp = null, $gReCaptchaResponse = null)
     {
         if (null === $secret) {
             throw new \Exception(
@@ -58,11 +58,54 @@ class ReCaptcha
     }
 
     /**
+     * @param string $clientIp
+     * @return $this
+     */
+    public function setClientIp($clientIp)
+    {
+        $this->clientIp = $clientIp;
+
+        return $this;
+    }
+
+    /**
+     * @param string $gReCaptchaResponse
+     * @return $this
+     */
+    public function setGReCaptchaResponse($gReCaptchaResponse)
+    {
+        $this->gReCaptchaResponse = $gReCaptchaResponse;
+
+        return $this;
+    }
+
+    /** @return string */
+    public function getClientIp()
+    {
+        return $this->clientIp;
+    }
+
+    /** @return string */
+    public function getGReCaptchaResponse()
+    {
+        return $this->gReCaptchaResponse;
+    }
+
+    /**
      * @param DriverInterface $driver
      * @return Request
+     * @throws \Exception
      */
     public function buildRequest(DriverInterface $driver = null)
     {
+        if (null === $this->clientIp) {
+            throw new \Exception('Client IP is required.');
+        }
+
+        if (null === $this->gReCaptchaResponse) {
+            throw new \Exception('G reCaptcha response token is required.');
+        }
+
         $this->request = new Request(self::$siteVerifyUrl, $driver);
         return $this->request->setParameters(
             array(

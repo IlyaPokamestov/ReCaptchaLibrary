@@ -84,4 +84,32 @@ class ReCaptchaTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('DS\Library\ReCaptcha\Http\Response', $response);
         $this->assertFalse($response->isSuccess());
     }
+
+    public function testClientIp() {
+        $this->reCaptcha = new ReCaptcha('secret', '127.0.0.1', 'google_response');
+        $this->assertEquals($this->reCaptcha->getClientIp(), '127.0.0.1');
+        $this->reCaptcha->setClientIp('127.0.0.2');
+        $this->assertNotEquals($this->reCaptcha->getClientIp(), '127.0.0.1');
+        $this->assertEquals($this->reCaptcha->getClientIp(), '127.0.0.2');
+    }
+
+    public function testGResponse() {
+        $this->reCaptcha = new ReCaptcha('secret', '127.0.0.1', 'google_response');
+        $this->assertEquals($this->reCaptcha->getGReCaptchaResponse(), 'google_response');
+        $this->reCaptcha->setGReCaptchaResponse('google_response123');
+        $this->assertNotEquals($this->reCaptcha->getGReCaptchaResponse(), 'google_response');
+        $this->assertEquals($this->reCaptcha->getGReCaptchaResponse(), 'google_response123');
+    }
+
+    public function testWithoutIp() {
+        $this->setExpectedException('Exception', 'Client IP is required.');
+        $this->reCaptcha = new ReCaptcha('secret');
+        $this->reCaptcha->buildRequest();
+    }
+
+    public function testWithoutGResponse() {
+        $this->setExpectedException('Exception', 'G reCaptcha response token is required.');
+        $this->reCaptcha = new ReCaptcha('secret', '127.0.0.1');
+        $this->reCaptcha->buildRequest();
+    }
 }
