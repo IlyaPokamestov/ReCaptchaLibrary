@@ -51,7 +51,10 @@ class ReCaptchaTest extends \PHPUnit_Framework_TestCase
     public function testSimpleDriver()
     {
         $driver = new SimpleDriver();
-        $this->assertJsonStringEqualsJsonString('{"success": "true"}', $driver->get('http://echo.jsontest.com/success/true'));
+        $this->assertJsonStringEqualsJsonString(
+            '{"success": "true"}',
+            $driver->get('https://gist.githubusercontent.com/DarioSwain/e7e3d5653b96bdf15f30/raw/6fcd37fde96c0be03d39969b881c8789ed101bc2/test.json')
+        );
     }
 
     public function testWrongSecretInReCaptcha()
