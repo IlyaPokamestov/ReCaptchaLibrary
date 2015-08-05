@@ -3,9 +3,9 @@ Google ReCAPTCHA ver.2 backend provider
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/cbc2c849-3910-4316-bac2-9977c4eda736/big.png)](https://insight.sensiolabs.com/projects/cbc2c849-3910-4316-bac2-9977c4eda736)
 [![Latest Stable Version](https://poser.pugx.org/dario_swain/re-captcha-library/v/stable.svg)](https://packagist.org/packages/dario_swain/re-captcha-library)
-[![Build Status](https://travis-ci.org/DarioSwain/ReCaptchaLibrary.svg?branch=master)](https://travis-ci.org/DarioSwain/ReCaptchaLibrary)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/?branch=master)
+[![Build Status](https://travis-ci.org/DarioSwain/ReCaptchaLibrary.svg?branch=1.0)](https://travis-ci.org/DarioSwain/ReCaptchaLibrary)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/badges/quality-score.png?b=1.0)](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/?branch=1.0)
+[![Code Coverage](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/badges/coverage.png?b=1.0)](https://scrutinizer-ci.com/g/DarioSwain/ReCaptchaLibrary/?branch=1.0)
 [![License](https://poser.pugx.org/dario_swain/re-captcha-library/license.svg)](https://packagist.org/packages/dario_swain/re-captcha-library)
 
 You can find full documentation about Google reCAPTCHA API v2 [here](http://developers.google.com/recaptcha/intro).
