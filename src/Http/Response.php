@@ -39,8 +39,15 @@ class Response extends Message implements ResponseInterface
             $this->stream = new Stream($body);
         }
 
-        foreach ($headers as $header) {
-            list($name, $value) = explode(':', $header);
+        foreach ($headers as $headerName => $header) {
+            //Some HTTP clients can provide header value in array format.
+            if (is_array($header)) {
+                $name = $headerName;
+                $value = current($header);
+            } else {
+                list($name, $value) = explode(':', $header);
+            }
+
             $values = explode(';', trim($value));
             foreach ($values as $headerValue) {
                 $this->withAddedHeader($name, trim($headerValue));

@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
 */
 
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 require_once '../vendor/autoload.php';
 
 use DS\Library\ReCaptcha\Client;
@@ -56,7 +58,7 @@ if ($success) {
 }
 
 if ($validationError) {
-    echo 'Validation  failed with error: '. $validationError;
+    echo $validationError;
 }
 
 ?>
