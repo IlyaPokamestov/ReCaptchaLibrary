@@ -153,7 +153,7 @@ class Uri implements UriInterface
     public function withUserInfo($user, $password = null)
     {
         $info = $user;
-        if ($password) {
+        if (null !== $password) {
             $info = sprintf('%s:%s', $info, $password);
         }
         $this->userInfo = $info;
@@ -225,7 +225,7 @@ class Uri implements UriInterface
         $this->withScheme(isset($parts['scheme']) ? $parts['scheme'] : '')
             ->withUserInfo(
                 isset($parts['user']) ? $parts['user'] : '',
-                isset($parts['pass']) ? ':'.$parts['pass'] : ''
+                isset($parts['pass']) ? ':'.$parts['pass'] : null
             )
             ->withHost(isset($parts['host']) ? $parts['host'] : '')
             ->withPort(!empty($parts['port']) ? $parts['port'] : null)

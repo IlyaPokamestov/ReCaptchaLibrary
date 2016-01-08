@@ -98,11 +98,10 @@ class Message implements MessageInterface
     /** {@inheritdoc} */
     public function withoutHeader($header)
     {
-        if (!$this->hasHeader($header)) {
-            return $this;
+        if ($this->hasHeader($header)) {
+            $name = strtolower($header);
+            unset($this->headers[$name]);
         }
-        $name = strtolower($header);
-        unset($this->headers[$name]);
 
         return $this;
     }
