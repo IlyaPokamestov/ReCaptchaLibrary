@@ -35,7 +35,7 @@ class Client
 
     /** @var string */
     protected $secret;
-    /** @var  Client */
+    /** @var  ClientInterface */
     protected $httpClient;
     /** @var  UriInterface */
     protected $uri;
