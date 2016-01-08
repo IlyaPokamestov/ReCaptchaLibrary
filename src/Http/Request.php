@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the DSReCaptcha Library.
+ * This file is part of the ReCaptcha Library.
  *
  * (c) Ilya Pokamestov <dario_swain@yahoo.com>
  *
@@ -10,114 +10,127 @@
 
 namespace DS\Library\ReCaptcha\Http;
 
-use DS\Library\ReCaptcha\Http\Driver\DriverInterface;
-use DS\Library\ReCaptcha\Http\Driver\SimpleDriver;
+use InvalidArgumentException;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
- * DsReCaptcha library, request to google reCAPTCHA API.
+ * ReCaptcha library, PSR7 request representation.
  *
  * @author Ilya Pokamestov <dario_swain@yahoo.com>
+ *
+ * Class Request
+ * @package DS\Library\ReCaptcha\Http
  */
-class Request
+class Request extends Message implements RequestInterface
 {
-    /** @var DriverInterface */
-    protected $driver;
-    /** @var  string */
-    protected $url;
-    /** @var array */
-    protected $parameters;
+    /** @var string */
+    protected $method;
+    /** @var null|UriInterface */
+    protected $uri;
+    /** @var null|string */
+    protected $requestTarget;
 
     /**
-     * @param string $url
-     * @param DriverInterface $driver
+     * @param null|string $method HTTP method for the request.
+     * @param null|string $uri URI for the request.
+     *
+     * @throws InvalidArgumentException for an invalid URI
      */
-    public function __construct($url, DriverInterface $driver = null)
+    public function __construct($method = null, $uri = null)
     {
-        $this->url = $url;
-        $this->parameters = array();
-
-
-        if (null === $driver) {
-            $driver = new SimpleDriver();
+        if (is_string($uri)) {
+            $this->uri = new Uri($uri);
+            $this->addHostHeader($this->uri);
+        } elseif ($uri instanceof UriInterface) {
+            $this->uri = $uri;
+            $this->addHostHeader($this->uri);
         }
 
-        $this->driver = $driver;
+        if (is_string($method)) {
+            $this->method = strtoupper($method);
+        }
     }
 
     /**
-     * @param DriverInterface $driver
-     * @return $this
+     * Build host.
+     *
+     * @param UriInterface $uri
      */
-    public function setDriver(DriverInterface $driver)
+    protected function addHostHeader(UriInterface $uri)
     {
-        $this->driver = $driver;
+        $host = $uri->getHost();
+        if ($port = $uri->getPort()) {
+            $host = sprintf('%s:%s', $host, $port);
+        }
+
+        $this->headers['host'] = array($host);
+    }
+
+    /** {@inheritdoc} */
+    public function getRequestTarget()
+    {
+        if ($this->requestTarget !== null) {
+            return $this->requestTarget;
+        }
+
+        $target = $this->uri->getPath();
+
+        if ('' === $target) {
+            $target = '/';
+        }
+
+        if ($this->uri->getQuery()) {
+            $target .= '?' . $this->uri->getQuery();
+        }
+
+        return $target;
+    }
+
+    /** {@inheritdoc} */
+    public function withRequestTarget($requestTarget)
+    {
+        if (preg_match('#\s#', $requestTarget)) {
+            throw new InvalidArgumentException(
+                'Invalid request target provided; cannot contain whitespace'
+            );
+        }
+        $this->requestTarget = $requestTarget;
 
         return $this;
     }
 
-    /**
-     * @return DriverInterface
-     */
-    public function getDriver()
+    /** {@inheritdoc} */
+    public function getMethod()
     {
-        return $this->driver;
+        return $this->method;
     }
 
-    /**
-     * @param array $parameters
-     * @return $this
-     */
-    public function setParameters(array $parameters)
+    /** {@inheritdoc} */
+    public function withMethod($method)
     {
-        $this->parameters = $parameters;
+        $this->method = strtoupper($method);
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    /** {@inheritdoc} */
+    public function getUri()
     {
-        return $this->parameters;
+        return $this->uri;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    /** {@inheritdoc} */
+    public function withUri(UriInterface $uri, $preserveHost = false)
     {
-        return $this->url;
-    }
+        $this->uri = $uri;
 
-    /**
-     * @param string $url
-     * @return $this
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
+        if (!$preserveHost) {
+            if ($uri->getHost()) {
+                $this->addHostHeader($uri);
+            }
+        }
 
         return $this;
-    }
-
-    /**
-     * @return Response
-     */
-    public function send()
-    {
-        $response = $this->driver->get($this->getUrl(), $this->getParameters());
-
-        if (false === $response) {
-            return new Response(false, array('Connection error'));
-        }
-
-        $response = json_decode($response, true);
-
-        if ($response['success'] === true) {
-            return new Response(true);
-        } else {
-            return new Response(false, array_key_exists('error-codes', $response) ? $response['error-codes'] : array());
-        }
     }
 }

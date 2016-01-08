@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the DSReCaptcha Library.
+ * This file is part of the ReCaptcha Library.
  *
  * (c) Ilya Pokamestov <dario_swain@yahoo.com>
  *
@@ -10,41 +10,69 @@
 
 namespace DS\Library\ReCaptcha\Http;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
- * DsReCaptcha library, response from google reCAPTCHA API.
+ * ReCaptcha library, PSR7 response representation.
  *
  * @author Ilya Pokamestov <dario_swain@yahoo.com>
+ *
+ * Class Response
+ * @package DS\Library\ReCaptcha\Http
  */
-class Response
+class Response extends Message implements ResponseInterface
 {
-    /** @var bool */
-    protected $success;
-    /** @var array */
-    protected $errorCodes;
+    /** @var null|string */
+    protected $reasonPhrase = '';
+    /** @var int */
+    protected $statusCode = 200;
 
     /**
-     * @param bool $success
-     * @param array $errors
+     * @param int    $status  Status code for the response, if any.
+     * @param array  $headers Headers for the response, if any.
+     * @param mixed  $body    Stream body.
      */
-    public function __construct($success, array $errors = array())
+    public function __construct($status = 200, array $headers = array(), $body = null)
     {
-        $this->success = $success;
-        $this->errorCodes = $errors;
+        $this->statusCode = (int)$status;
+        if ($body) {
+            $this->stream = new Stream($body);
+        }
+
+        foreach ($headers as $header) {
+            list($name, $value) = explode(':', $header);
+            $values = explode(';', trim($value));
+            foreach ($values as $headerValue) {
+                $this->withAddedHeader($name, trim($headerValue));
+            }
+        }
+
+        if (isset(Protocol::$phrases[$this->statusCode])) {
+            $this->reasonPhrase = Protocol::$phrases[$this->statusCode];
+        }
     }
 
-    /**
-     * @return bool
-     */
-    public function isSuccess()
+    /** {@inheritdoc} */
+    public function getStatusCode()
     {
-        return $this->success;
+        return $this->statusCode;
     }
 
-    /**
-     * @return array
-     */
-    public function getErrors()
+    /** {@inheritdoc} */
+    public function getReasonPhrase()
     {
-        return $this->errorCodes;
+        return $this->reasonPhrase;
+    }
+
+    /** {@inheritdoc} */
+    public function withStatus($code, $reasonPhrase = '')
+    {
+        $this->statusCode = (int)$code;
+        if (!$reasonPhrase && isset(Protocol::$phrases[$this->statusCode])) {
+            $reasonPhrase = Protocol::$phrases[$this->statusCode];
+        }
+        $this->reasonPhrase = $reasonPhrase;
+
+        return $this;
     }
 }
