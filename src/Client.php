@@ -89,11 +89,8 @@ class Client
         $this->request = new Request();
         $this->request->withUri($this->uri)
             ->withMethod($this->method)
-            ->withBody($this->createBody($googleResponseToken, $ip));
-
-        if ($this->httpClient instanceof SimpleClient) {
-            $this->request->withHeader('Content-type', 'application/x-www-form-urlencoded');
-        }
+            ->withBody($this->createBody($googleResponseToken, $ip))
+            ->withHeader('Content-type', 'application/x-www-form-urlencoded');
 
         return $this->validateRequest($this->request);
     }

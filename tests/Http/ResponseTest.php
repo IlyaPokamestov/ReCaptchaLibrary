@@ -30,6 +30,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Bad Request', $response->getReasonPhrase());
     }
 
+    public function testArrayHeaders()
+    {
+        $response = new Response(400, array('Content-Type' => array('json')), 'stream');
+        var_dump($response->getHeaderLine('Content-Type'));
+        $this->assertEquals('json', $response->getHeaderLine('Content-Type'));
+    }
+
     public function testStatusCode()
     {
         $response = new Response();

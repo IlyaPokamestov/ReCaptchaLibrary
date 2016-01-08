@@ -37,7 +37,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBody()
     {
-        $client = new Client('secret');
+        $client = new Client('secret', null, Client::$siteVerifyUri);
         $this->assertInstanceOf('DS\Library\ReCaptcha\Client', $client);
 
         $stream = $client->createBody('token', '1.1.1.1');

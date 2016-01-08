@@ -1,4 +1,4 @@
-#Google ReCAPTCHA ver.2 backend provider
+#Google ReCAPTCHA ver.2 backend client
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/cbc2c849-3910-4316-bac2-9977c4eda736/big.png)](https://insight.sensiolabs.com/projects/cbc2c849-3910-4316-bac2-9977c4eda736)
 [![Latest Stable Version](https://poser.pugx.org/dario_swain/re-captcha-library/v/stable.svg)](https://packagist.org/packages/dario_swain/re-captcha-library)
@@ -12,7 +12,7 @@ You can find full documentation about Google reCAPTCHA API v2 [here](http://deve
 ##Installation
 
 You can install this package with [Composer](http://getcomposer.org/).
-Add next lines to your composer.json file:
+Add lines below in your composer.json file:
 
 ``` json
 {
@@ -22,7 +22,7 @@ Add next lines to your composer.json file:
 }
 ```
 
-or you can use ```composer require```:
+or you can use ```composer require``` like here:
 
 ``` bash
 composer require dario_swain/re-captcha-library 2.0.*
@@ -77,11 +77,10 @@ More about client integration you can find in [official docs](https://developers
 **Simple work example you can find in ```examples/index.php```.**
 
 
-Custom Driver
--------------
+##Custom Client
 
-You can change reCaptcha standard client to custom client implementation. In this case you can use 
-```DS\Library\ReCaptcha\Http\Client\ClientInterface```. Also you can use any PSR7 comparability HTTP client like 
+You can change reCaptcha standard HTTP client to custom client implementation. In this case you can use 
+```DS\Library\ReCaptcha\Http\Client\ClientInterface``` object. Also you can use any PSR7 comparability HTTP client like 
 
 ``` php
 <?php
@@ -101,6 +100,27 @@ You can change reCaptcha standard client to custom client implementation. In thi
     
 	$reCaptchaClient->validate($gReCaptchaResponse, $clientIp);
 
+```
+
+##Guzzle integration
+
+Instead of standard HTTP client you can use more advanced HTTP client like [Guzzle](https://github.com/guzzle/guzzle). 
+Now ReCaptchaLibrary support ```3.*```, ```4.*```, ```5.*``` and ```6.*``` versions of ```guzzlehttp/guzzle```
+
+Guzzle client example:
+
+```php
+
+    use DS\Library\ReCaptcha\Http\Client\Guzzle\GuzzleClient;
+
+    $reCaptchaGuzzleClient = new GuzzleClient(); //Guzzle client will be detected automatically
+    
+    //Also you can manually create and initialize Guzzle Client
+    $guzzle = new \GuzzleHttp\Client($configuration);
+    $reCaptchaGuzzleClient = new GuzzleClient($guzzle);
+
+    $reCaptchaClient = new Client('PRIVATE KEY', $reCaptchaGuzzleClient);
+    $reCaptchaClient->validate($gResponse);
 ```
 
 #Copyright
