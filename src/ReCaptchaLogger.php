@@ -2,86 +2,116 @@
 
 namespace DS\Library\ReCaptcha;
 
-use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\NullLogger;
 
-class ReCaptchaLogger implements LoggerAwareInterface
+/**
+ * ReCaptcha logger.
+ *
+ * @package DS\Library\ReCaptcha
+ */
+class ReCaptchaLogger implements LoggerInterface
 {
+    /**
+     * @var LoggerInterface|NullLogger|null
+     */
     private $logger;
-    
-    public function __construct()
+
+    /**
+     * ReCaptchaLogger constructor.
+     *
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
     {
-        $this->logger = new NullLogger();
-    }
-
-    public function setLogger(LoggerInterface $logger = null) {
-        $this->logger = $logger;
-    }
-
-    public function emergency($message, array $context = array()) {
-        $this->logger->fatal($this->interpolate($message, $context));
+        $this->logger = ($logger === null) ? new NullLogger() : $logger;
     }
 
     /**
+     * Log EMERGENCY type notification.
+     *
+     * @param string $message
+     * @param array $context
+     */
+    public function emergency($message, array $context = array()) {
+        $this->logger->emergency($message, $context);
+    }
+
+    /**
+     * Log ALERT type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function alert($message, array $context = array()) {
-        $this->logger->fatal($this->interpolate($message, $context));
+        $this->logger->alert($message, $context);
     }
 
     /**
+     * Log CRITICAL type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function critical($message, array $context = array()) {
-        $this->logger->fatal($this->interpolate($message, $context));
+        $this->logger->critical($message, $context);
     }
 
     /**
+     * Log ERROR type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function error($message, array $context = array()) {
-        $this->logger->error($this->interpolate($message, $context));
+        $this->logger->error($message, $context);
     }
 
     /**
+     * Log WARNING type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function warning($message, array $context = array()) {
-        $this->logger->warn($this->interpolate($message, $context));
+        $this->logger->warning($message, $context);
     }
 
     /**
+     * Log NOTICE type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function notice($message, array $context = array()) {
-        $this->logger->info($this->interpolate($message, $context));
+        $this->logger->notice($message, $context);
     }
 
     /**
+     * Log INFO type notification.
+     *
      * @param $message
      * @param array $context
      */
     public function info($message, array $context = array()) {
-        $this->logger->info($this->interpolate($message, $context));
+        $this->logger->info($message, $context);
     }
 
     /**
+     *
+     * Log DEBUG type notification.
      * @param $message
      * @param array $context
      */
     public function debug($message, array $context = array()) {
-        $this->logger->debug($this->interpolate($message, $context));
+        $this->logger->debug($message, $context);
     }
 
     /**
+     * Additional logging functionality based on notificaton level.
+     *
      * @param $level
      * @param $message
      * @param array $context
@@ -117,22 +147,5 @@ class ReCaptchaLogger implements LoggerAwareInterface
                     "Unknown severity level"
                 );
         }
-    }
-
-    /**
-     * @param $message
-     * @param array $context
-     * @return string
-     */
-    protected function interpolate($message, array $context = array()) {
-        // build a replacement array with braces around the context
-        // keys
-        $replace = array();
-        foreach ($context as $key => $val) {
-            $replace['{' . $key . '}'] = $val;
-        }
-
-        // interpolate replacement values into the message and return
-        return strtr($message, $replace);
     }
 }
